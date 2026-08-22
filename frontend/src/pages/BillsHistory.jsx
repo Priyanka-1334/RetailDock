@@ -157,13 +157,13 @@ export const BillsHistory = () => {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem', fontSize: '0.85rem' }}>
-              <div style={{ backgroundColor: '#0F172A', padding: '0.85rem', borderRadius: 'var(--radius-md)' }}>
+              <div style={{ backgroundColor: 'var(--bg-input)', padding: '0.85rem', borderRadius: 'var(--radius-md)' }}>
                 <span style={{ color: 'var(--text-subtle)' }}>Billed To:</span>
                 <div style={{ fontWeight: 700, marginTop: '0.25rem' }}>{selectedBill.customer?.name || 'Walk-in Customer'}</div>
                 <div style={{ color: 'var(--text-muted)' }}>Phone: {selectedBill.customer?.phone || 'N/A'}</div>
               </div>
 
-              <div style={{ backgroundColor: '#0F172A', padding: '0.85rem', borderRadius: 'var(--radius-md)' }}>
+              <div style={{ backgroundColor: 'var(--bg-input)', padding: '0.85rem', borderRadius: 'var(--radius-md)' }}>
                 <span style={{ color: 'var(--text-subtle)' }}>Issued By:</span>
                 <div style={{ fontWeight: 700, marginTop: '0.25rem' }}>{selectedBill.cashier?.full_name || selectedBill.cashier?.username}</div>
                 <div style={{ color: 'var(--text-muted)' }}>Payment: {selectedBill.payment_method} ({selectedBill.payment_status})</div>
@@ -199,7 +199,7 @@ export const BillsHistory = () => {
             </div>
 
             {/* Totals */}
-            <div style={{ fontSize: '0.85rem', padding: '1rem', backgroundColor: '#0F172A', borderRadius: 'var(--radius-md)' }}>
+            <div style={{ fontSize: '0.85rem', padding: '1rem', backgroundColor: 'var(--bg-input)', borderRadius: 'var(--radius-md)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
                 <span style={{ color: 'var(--text-muted)' }}>Subtotal:</span>
                 <span>₹{parseFloat(selectedBill.subtotal).toFixed(2)}</span>

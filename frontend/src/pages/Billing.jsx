@@ -296,7 +296,7 @@ export const Billing = () => {
                         • {prod.category?.name || 'Uncategorized'}
                       </span>
                     </div>
-                    <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#fff', marginTop: '0.1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)', marginTop: '0.1rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {prod.name}
                     </div>
                   </div>
@@ -308,7 +308,7 @@ export const Billing = () => {
                         ₹{parseFloat(prod.selling_price).toFixed(2)}
                       </div>
                       <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
-                        Stock: <strong style={{ color: prod.quantity > 0 ? '#F8FAFC' : 'var(--accent-rose)' }}>{prod.quantity}</strong>
+                        Stock: <strong style={{ color: prod.quantity > 0 ? 'var(--text-main)' : 'var(--accent-rose)' }}>{prod.quantity}</strong>
                       </div>
                     </div>
 
@@ -362,14 +362,14 @@ export const Billing = () => {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     padding: '0.35rem 0.65rem',
-                    backgroundColor: '#1E293B',
+                    backgroundColor: 'var(--bg-input)',
                     border: '1px solid var(--primary)',
                     borderRadius: 'var(--radius-md)',
                     height: '36px'
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', minWidth: 0 }}>
                       <User size={15} color="var(--primary)" />
-                      <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         {customers.find((c) => c.id === parseInt(selectedCustomerId))?.name || 'Customer'}
                       </span>
                       <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>
@@ -416,8 +416,8 @@ export const Billing = () => {
                     right: 0,
                     zIndex: 100,
                     marginTop: '0.25rem',
-                    backgroundColor: '#151C2C',
-                    border: '1px solid #334155',
+                    backgroundColor: 'var(--bg-card)',
+                    border: '1px solid var(--border-color)',
                     borderRadius: 'var(--radius-md)',
                     maxHeight: '180px',
                     overflowY: 'auto',
@@ -473,11 +473,11 @@ export const Billing = () => {
                             justifyContent: 'space-between',
                             alignItems: 'center'
                           }}
-                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#1E293B')}
+                          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--bg-card-hover)')}
                           onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                         >
                           <div>
-                            <div style={{ fontWeight: 700, color: '#fff' }}>{c.name}</div>
+                            <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>{c.name}</div>
                             <div style={{ fontSize: '0.72rem', color: 'var(--text-subtle)' }}>
                               {c.phone || 'No phone'} {c.email ? `• ${c.email}` : ''}
                             </div>
@@ -534,7 +534,7 @@ export const Billing = () => {
                     style={{
                       padding: '0.65rem 0.75rem',
                       borderRadius: 'var(--radius-md)',
-                      backgroundColor: '#0F172A',
+                      backgroundColor: 'var(--bg-input)',
                       border: '1px solid var(--border-color)',
                       marginBottom: '0.5rem',
                       display: 'flex',
@@ -545,7 +545,7 @@ export const Billing = () => {
                     {/* Item Name & Net Line Total */}
                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '0.5rem' }}>
                       <div style={{ minWidth: 0 }}>
-                        <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {item.name}
                         </div>
                         <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '0.1rem' }}>
@@ -577,7 +577,7 @@ export const Billing = () => {
                         >
                           <Minus size={12} />
                         </button>
-                        <span style={{ fontSize: '0.85rem', fontWeight: 800, minWidth: '22px', textAlign: 'center', color: '#fff' }}>
+                        <span style={{ fontSize: '0.85rem', fontWeight: 800, minWidth: '22px', textAlign: 'center', color: 'var(--text-main)' }}>
                           {item.quantity}
                         </span>
                         <button
@@ -627,7 +627,7 @@ export const Billing = () => {
 
           {/* Overall Order Discount & Tax Controls */}
           <div style={{
-            backgroundColor: '#0F172A',
+            backgroundColor: 'var(--bg-input)',
             padding: '0.65rem 0.85rem',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--border-color)',
@@ -720,7 +720,7 @@ export const Billing = () => {
               borderTop: '1px solid var(--border-color)',
               fontSize: '1.05rem',
               fontWeight: 800,
-              color: '#fff'
+              color: 'var(--text-main)'
             }}>
               <span>Grand Total:</span>
               <span style={{ color: 'var(--accent-emerald)' }}>₹{grandTotal.toFixed(2)}</span>
@@ -759,13 +759,13 @@ export const Billing = () => {
 
             <h2 style={{ fontSize: '1.4rem' }}>Transaction Completed!</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '0.25rem' }}>
-              Invoice Number: <strong style={{ color: '#fff' }}>{completedBill.bill_number}</strong>
+              Invoice Number: <strong style={{ color: 'var(--text-main)' }}>{completedBill.bill_number}</strong>
             </p>
 
             <div style={{
               margin: '1.5rem 0',
               padding: '1rem',
-              backgroundColor: '#0F172A',
+              backgroundColor: 'var(--bg-input)',
               borderRadius: 'var(--radius-md)',
               textAlign: 'left',
               fontSize: '0.85rem'

@@ -1,10 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { User, Bell, Search, ShieldCheck } from 'lucide-react';
+import { User, Search, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 export const Navbar = () => {
   const { user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <header style={{
@@ -20,56 +22,80 @@ export const Navbar = () => {
       zIndex: 100,
       flexShrink: 0
     }}>
-      {/* Top Left Search */}
-      <div style={{ width: '320px' }} className="search-bar">
+      {/* Top Left Fully Expanded Search Bar (Fills all remaining available space) */}
+      <div style={{ flex: 1, marginRight: '2rem' }} className="search-bar">
         <Search size={16} />
         <input
           type="text"
           className="form-input"
           placeholder="Quick search products, bills, customers..."
-          style={{ height: '38px', fontSize: '0.85rem' }}
+          style={{ height: '38px', fontSize: '0.85rem', width: '100%' }}
         />
       </div>
 
       {/* Top Right Controls */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          padding: '0.35rem 0.75rem',
-          borderRadius: 'var(--radius-md)',
-          backgroundColor: '#0F172A',
-          border: '1px solid var(--border-color)',
-          fontSize: '0.8rem',
-          color: 'var(--text-muted)'
-        }}>
-          <ShieldCheck size={16} color="var(--accent-emerald)" />
-          <span>Active Role: <strong style={{ color: '#fff' }}>{user?.role}</strong></span>
-        </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexShrink: 0 }}>
+        {/* Theme Toggle Icon Button */}
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="btn btn-secondary btn-icon"
+          style={{
+            width: '38px',
+            height: '38px',
+            borderRadius: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'var(--bg-input)',
+            border: '1px solid var(--border-color)',
+            color: theme === 'dark' ? '#F59E0B' : '#4F46E5',
+            cursor: 'pointer',
+            transition: 'var(--transition)'
+          }}
+          title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Mode'}
+        >
+          {theme === 'dark' ? <Sun size={19} /> : <Moon size={19} />}
+        </button>
 
+        {/* Profile Round Icon with Login User Name on the Right Side */}
         <NavLink
           to="/profile"
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.75rem',
+            gap: '0.65rem',
             textDecoration: 'none',
-            color: 'var(--text-main)'
+            color: 'var(--text-main)',
+            padding: '0.25rem 0.5rem',
+            borderRadius: 'var(--radius-md)',
+            transition: 'var(--transition)'
           }}
         >
           <div style={{
             width: '36px',
             height: '36px',
             borderRadius: '50%',
-            backgroundColor: '#1E293B',
-            border: '1px solid #334155',
+            backgroundColor: 'var(--primary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'var(--primary)'
+            color: '#fff',
+            fontWeight: 800,
+            fontSize: '0.95rem',
+            boxShadow: '0 2px 8px var(--primary-glow)',
+            flexShrink: 0
           }}>
-            <User size={18} />
+            {user?.username ? user.username.charAt(0).toUpperCase() : <User size={18} />}
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
+            <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--text-main)' }}>
+              {user?.full_name || user?.username || 'Operator Profile'}
+            </span>
+            <span style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontWeight: 600 }}>
+              {user?.role || 'Operator'}
+            </span>
           </div>
         </NavLink>
       </div>

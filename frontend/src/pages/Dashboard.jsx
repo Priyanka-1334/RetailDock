@@ -25,12 +25,14 @@ import {
 } from 'recharts';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { StatCard } from '../components/StatCard';
 
 const PIE_COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#06B6D4'];
 
 export const Dashboard = () => {
   const { user, isAdmin } = useAuth();
+  const { isDark } = useTheme();
   const [salesReport, setSalesReport] = useState(null);
   const [productReport, setProductReport] = useState(null);
   const [inventoryReport, setInventoryReport] = useState(null);
@@ -163,11 +165,19 @@ export const Dashboard = () => {
                     <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" />
-                <XAxis dataKey="date" stroke="#64748B" fontSize={11} tickLine={false} />
-                <YAxis stroke="#64748B" fontSize={11} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke={isDark ? '#1E293B' : '#E2E8F0'} />
+                <XAxis dataKey="date" stroke={isDark ? '#64748B' : '#475569'} fontSize={11} tickLine={false} />
+                <YAxis stroke={isDark ? '#64748B' : '#475569'} fontSize={11} tickLine={false} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#151C2C', borderColor: '#334155', borderRadius: '8px', color: '#fff' }}
+                  contentStyle={{
+                    backgroundColor: isDark ? '#151C2C' : '#FFFFFF',
+                    borderColor: isDark ? '#334155' : '#CBD5E1',
+                    borderRadius: '8px',
+                    color: isDark ? '#F8FAFC' : '#0F172A',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+                  }}
+                  itemStyle={{ color: isDark ? '#F8FAFC' : '#0F172A' }}
+                  labelStyle={{ color: isDark ? '#F8FAFC' : '#0F172A' }}
                   formatter={(val) => [`₹${val}`, 'Revenue']}
                 />
                 <Area type="monotone" dataKey="revenue" stroke="#3B82F6" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
@@ -204,7 +214,17 @@ export const Dashboard = () => {
                       <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: '#151C2C', borderColor: '#334155', borderRadius: '8px', color: '#fff' }} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: isDark ? '#151C2C' : '#FFFFFF',
+                      borderColor: isDark ? '#334155' : '#CBD5E1',
+                      borderRadius: '8px',
+                      color: isDark ? '#F8FAFC' : '#0F172A',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+                    }}
+                    itemStyle={{ color: isDark ? '#F8FAFC' : '#0F172A' }}
+                    labelStyle={{ color: isDark ? '#F8FAFC' : '#0F172A' }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             )}
