@@ -6,7 +6,7 @@ export const StatCard = ({ title, value, subtitle, icon: Icon, color = 'var(--pr
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
         <div>
           <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)' }}>{title}</span>
-          <div style={{ fontSize: '1.85rem', fontWeight: 800, margin: '0.35rem 0', color: '#fff' }}>{value}</div>
+          <div style={{ fontSize: '1.85rem', fontWeight: 800, margin: '0.35rem 0', color: 'var(--text-main)' }}>{value}</div>
           {subtitle && (
             <span style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', fontWeight: 500 }}>{subtitle}</span>
           )}

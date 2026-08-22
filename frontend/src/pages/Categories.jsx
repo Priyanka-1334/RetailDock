@@ -93,7 +93,7 @@ export const Categories = () => {
           <div key={cat.id} className="card">
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
               <div>
-                <h3 style={{ fontSize: '1.15rem', color: '#fff' }}>{cat.name}</h3>
+                <h3 style={{ fontSize: '1.15rem', color: 'var(--text-main)' }}>{cat.name}</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-subtle)', marginTop: '0.25rem' }}>
                   {cat.description || 'No description provided'}
                 </p>

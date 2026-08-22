@@ -10,13 +10,14 @@ import {
   Users,
   BarChart3,
   UserCheck,
+  User,
   LogOut,
   Store
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Sidebar = () => {
-  const { user, isAdmin, logout } = useAuth();
+  const { isAdmin, logout } = useAuth();
 
   const navItems = [
     { label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
@@ -28,6 +29,7 @@ export const Sidebar = () => {
     { label: 'Customers', path: '/customers', icon: UserCheck },
     ...(isAdmin ? [{ label: 'Analytics & Reports', path: '/reports', icon: BarChart3 }] : []),
     ...(isAdmin ? [{ label: 'User Management', path: '/users', icon: Users }] : []),
+    { label: 'My Profile', path: '/profile', icon: User },
   ];
 
   return (
@@ -48,20 +50,8 @@ export const Sidebar = () => {
           <Store size={20} />
         </div>
         <div>
-          <h1 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>RetailDock</h1>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-subtle)', fontWeight: 600 }}>v1.0 • Enterprise POS</span>
+          <h1 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-main)', lineHeight: 1.2 }}>RetailDock</h1>
         </div>
-      </div>
-
-      {/* User Role Banner */}
-      <div className="sidebar-user">
-        <div>
-          <div style={{ fontSize: '0.83rem', fontWeight: 700, color: '#fff' }}>{user?.username}</div>
-          <div style={{ fontSize: '0.73rem', color: 'var(--text-muted)' }}>{user?.full_name || 'System Operator'}</div>
-        </div>
-        <span className={`badge ${isAdmin ? 'badge-danger' : 'badge-info'}`}>
-          {user?.role}
-        </span>
       </div>
 
       {/* Navigation Links */}
@@ -76,8 +66,8 @@ export const Sidebar = () => {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.85rem',
-                padding: '0.52rem 0.75rem',
-                margin: '0.12rem 0',
+                padding: '0.55rem 0.75rem',
+                margin: '0.15rem 0',
                 borderRadius: 'var(--radius-md)',
                 color: isActive ? '#fff' : 'var(--text-muted)',
                 backgroundColor: isActive ? 'var(--primary)' : 'transparent',
@@ -99,7 +89,7 @@ export const Sidebar = () => {
         <button
           onClick={logout}
           className="btn btn-secondary"
-          style={{ width: '100%', justifyContent: 'flex-start', color: '#FB7185' }}
+          style={{ width: '100%', justifyContent: 'flex-start', color: 'var(--accent-rose)' }}
           title="Sign Out of Terminal"
         >
           <LogOut size={18} />

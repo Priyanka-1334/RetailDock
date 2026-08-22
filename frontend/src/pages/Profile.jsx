@@ -35,12 +35,12 @@ export const Profile = () => {
             fontWeight: 800,
             marginBottom: '1rem',
             boxShadow: '0 6px 20px var(--primary-glow)',
-            border: '3px solid #1E293B'
+            border: '3px solid var(--border-color)'
           }}>
             {user?.username?.charAt(0).toUpperCase() || 'U'}
           </div>
 
-          <h2 style={{ fontSize: '1.25rem', color: '#fff', fontWeight: 800 }}>
+          <h2 style={{ fontSize: '1.25rem', color: 'var(--text-main)', fontWeight: 800 }}>
             {user?.full_name || user?.username}
           </h2>
           <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
@@ -86,21 +86,21 @@ export const Profile = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
               <div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', fontWeight: 600 }}>Username</div>
-                <div style={{ fontSize: '0.92rem', color: '#fff', fontWeight: 700, marginTop: '0.25rem' }}>
+                <div style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 700, marginTop: '0.25rem' }}>
                   {user?.username}
                 </div>
               </div>
 
               <div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', fontWeight: 600 }}>Full Name</div>
-                <div style={{ fontSize: '0.92rem', color: '#fff', fontWeight: 700, marginTop: '0.25rem' }}>
+                <div style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 700, marginTop: '0.25rem' }}>
                   {user?.full_name || 'System Operator'}
                 </div>
               </div>
 
               <div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', fontWeight: 600 }}>Email Address</div>
-                <div style={{ fontSize: '0.92rem', color: '#fff', fontWeight: 700, marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <div style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 700, marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <Mail size={14} color="var(--text-muted)" />
                   <span>{user?.email || 'No email registered'}</span>
                 </div>
@@ -108,7 +108,7 @@ export const Profile = () => {
 
               <div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', fontWeight: 600 }}>Registration Date</div>
-                <div style={{ fontSize: '0.92rem', color: '#fff', fontWeight: 700, marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <div style={{ fontSize: '0.92rem', color: 'var(--text-main)', fontWeight: 700, marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <Calendar size={14} color="var(--text-muted)" />
                   <span>{user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</span>
                 </div>
@@ -127,11 +127,11 @@ export const Profile = () => {
 
             <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
               <div style={{ marginBottom: '0.5rem' }}>
-                Assigned System Role: <strong style={{ color: '#fff' }}>{user?.role}</strong>
+                Assigned System Role: <strong style={{ color: 'var(--text-main)' }}>{user?.role}</strong>
               </div>
               <div style={{
                 padding: '0.85rem 1rem',
-                backgroundColor: '#0F172A',
+                backgroundColor: 'var(--bg-input)',
                 borderRadius: 'var(--radius-md)',
                 border: '1px solid var(--border-color)',
                 fontSize: '0.82rem'

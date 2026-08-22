@@ -262,13 +262,13 @@ export const Customers = () => {
 
             <div style={{
               padding: '0.85rem 1rem',
-              backgroundColor: '#0F172A',
+              backgroundColor: 'var(--bg-input)',
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--border-color)',
               marginBottom: '1.25rem',
               fontSize: '0.85rem'
             }}>
-              <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.95rem' }}>{deletingCustomer.name}</div>
+              <div style={{ fontWeight: 800, color: 'var(--text-main)', fontSize: '0.95rem' }}>{deletingCustomer.name}</div>
               <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.2rem' }}>
                 Phone: {deletingCustomer.phone || 'N/A'} • Email: {deletingCustomer.email || 'N/A'}
               </div>
