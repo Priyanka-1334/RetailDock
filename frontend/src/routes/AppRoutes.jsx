@@ -17,6 +17,8 @@ import { Profile } from '../pages/Profile';
 export const AppRoutes = () => {
   return (
     <Routes>
+      {/* Base URL "/" always redirects to "/login" */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
 
       {/* Protected Routes inside Layout */}
@@ -39,7 +41,8 @@ export const AppRoutes = () => {
         </Route>
       </Route>
 
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      {/* Wildcard Route redirects to "/login" */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 };

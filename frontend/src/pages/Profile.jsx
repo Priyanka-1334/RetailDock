@@ -1,73 +1,150 @@
 import React from 'react';
-import { User, ShieldCheck, Mail, Calendar, Key } from 'lucide-react';
+import { User, ShieldCheck, Mail, Calendar, Key, CheckCircle2, UserCheck, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export const Profile = () => {
   const { user, isAdmin } = useAuth();
 
   return (
-    <div>
-      <div className="page-header">
+    <div style={{ maxWidth: '840px', margin: '0 auto' }}>
+      {/* Header Banner */}
+      <div className="page-header" style={{ marginBottom: '1.5rem' }}>
         <div>
           <h1 className="page-title">
-            <User size={28} color="var(--primary)" />
-            <span>User Profile & Session Details</span>
+            <User size={26} color="var(--primary)" />
+            <span>Profile & Account Settings</span>
           </h1>
-          <p className="page-subtitle">Authenticated operator identity and system permissions</p>
+          <p className="page-subtitle">Manage your operator identity, active role, and security session</p>
         </div>
       </div>
 
-      <div className="card" style={{ maxWidth: '600px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.5rem' }}>
+      {/* Main Profile Dashboard Layout */}
+      <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '1.25rem', alignItems: 'start' }}>
+        {/* Left Column: Avatar & User Card */}
+        <div className="card" style={{ textAlign: 'center', padding: '1.75rem 1.25rem' }}>
           <div style={{
-            width: '64px',
-            height: '64px',
+            width: '80px',
+            height: '80px',
             borderRadius: '50%',
             backgroundColor: 'var(--primary)',
-            display: 'flex',
+            display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: '#fff',
-            fontSize: '1.5rem',
+            fontSize: '2rem',
             fontWeight: 800,
-            boxShadow: '0 4px 14px var(--primary-glow)'
+            marginBottom: '1rem',
+            boxShadow: '0 6px 20px var(--primary-glow)',
+            border: '3px solid #1E293B'
           }}>
-            {user?.username?.charAt(0).toUpperCase()}
+            {user?.username?.charAt(0).toUpperCase() || 'U'}
           </div>
-          <div>
-            <h2 style={{ fontSize: '1.35rem', color: '#fff' }}>{user?.full_name || user?.username}</h2>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.25rem' }}>
-              <span className={`badge ${isAdmin ? 'badge-danger' : 'badge-info'}`}>{user?.role}</span>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-subtle)' }}>• Username: @{user?.username}</span>
+
+          <h2 style={{ fontSize: '1.25rem', color: '#fff', fontWeight: 800 }}>
+            {user?.full_name || user?.username}
+          </h2>
+          <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>
+            @{user?.username}
+          </div>
+
+          <div style={{ marginTop: '0.85rem', display: 'flex', justifyContent: 'center' }}>
+            <span className={`badge ${isAdmin ? 'badge-danger' : 'badge-info'}`} style={{ padding: '0.3rem 0.8rem', fontSize: '0.75rem' }}>
+              <Shield size={12} />
+              <span>{user?.role}</span>
+            </span>
+          </div>
+
+          <div style={{
+            marginTop: '1.5rem',
+            paddingTop: '1.25rem',
+            borderTop: '1px solid var(--border-color)',
+            fontSize: '0.8rem',
+            color: 'var(--text-subtle)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0.5rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', color: 'var(--accent-emerald)' }}>
+              <CheckCircle2 size={14} />
+              <span style={{ fontWeight: 600 }}>Active Session</span>
             </div>
+            <div>JWT Authenticated • RetailDock POS</div>
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', borderTop: '1px solid var(--border-color)', paddingTop: '1.25rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <Mail size={18} color="var(--text-subtle)" />
-            <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)' }}>Email Address</div>
-              <div style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 600 }}>{user?.email || 'No email registered'}</div>
+        {/* Right Column: Detailed Account Information Cards */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          {/* Card 1: Account Information */}
+          <div className="card">
+            <div className="card-header" style={{ marginBottom: '1.25rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>
+              <h3 className="card-title" style={{ fontSize: '1rem' }}>
+                <UserCheck size={18} color="var(--primary)" />
+                <span>Account Information</span>
+              </h3>
             </div>
-          </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <ShieldCheck size={18} color="var(--accent-emerald)" />
-            <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)' }}>Role Access Controls</div>
-              <div style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 600 }}>
-                {isAdmin ? 'Full Administrative Access (Users, Inventory, POS, Analytics, Exports)' : 'Cashier Access (POS Checkout, Catalog View, Invoice History)'}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', fontWeight: 600 }}>Username</div>
+                <div style={{ fontSize: '0.92rem', color: '#fff', fontWeight: 700, marginTop: '0.25rem' }}>
+                  {user?.username}
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', fontWeight: 600 }}>Full Name</div>
+                <div style={{ fontSize: '0.92rem', color: '#fff', fontWeight: 700, marginTop: '0.25rem' }}>
+                  {user?.full_name || 'System Operator'}
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', fontWeight: 600 }}>Email Address</div>
+                <div style={{ fontSize: '0.92rem', color: '#fff', fontWeight: 700, marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <Mail size={14} color="var(--text-muted)" />
+                  <span>{user?.email || 'No email registered'}</span>
+                </div>
+              </div>
+
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)', fontWeight: 600 }}>Registration Date</div>
+                <div style={{ fontSize: '0.92rem', color: '#fff', fontWeight: 700, marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <Calendar size={14} color="var(--text-muted)" />
+                  <span>{user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <Calendar size={18} color="var(--text-subtle)" />
-            <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-subtle)' }}>Account Registration Date</div>
-              <div style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 600 }}>
-                {user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
+          {/* Card 2: Permissions & Role Scope */}
+          <div className="card">
+            <div className="card-header" style={{ marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.75rem' }}>
+              <h3 className="card-title" style={{ fontSize: '1rem' }}>
+                <ShieldCheck size={18} color="var(--accent-emerald)" />
+                <span>Role Permissions & Scope</span>
+              </h3>
+            </div>
+
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
+              <div style={{ marginBottom: '0.5rem' }}>
+                Assigned System Role: <strong style={{ color: '#fff' }}>{user?.role}</strong>
+              </div>
+              <div style={{
+                padding: '0.85rem 1rem',
+                backgroundColor: '#0F172A',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--border-color)',
+                fontSize: '0.82rem'
+              }}>
+                {isAdmin ? (
+                  <span style={{ color: 'var(--accent-emerald)' }}>
+                    ✓ Full Administrative Privileges: POS Checkout, Product & Category Management, Inventory Audit Logs, User RBAC, Analytics, and PDF/Excel Exports.
+                  </span>
+                ) : (
+                  <span style={{ color: 'var(--accent-cyan)' }}>
+                    ✓ Cashier Privileges: POS Checkout Terminal, Catalog Viewing, Stock Verification, Customer Lookup, and PDF Invoice Receipts.
+                  </span>
+                )}
               </div>
             </div>
           </div>

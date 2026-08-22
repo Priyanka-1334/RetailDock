@@ -4,8 +4,9 @@ from sqlalchemy.orm import Session
 from app.database.session import get_db
 from app.schemas.customer import CustomerCreate, CustomerUpdate, CustomerResponse
 from app.models.customer import Customer
-from app.core.deps import get_current_user
-from app.models.user import User
+from app.models.bill import Bill
+from app.core.deps import require_roles, get_current_user
+from app.models.user import User, UserRole
 
 router = APIRouter(prefix="/api/customers", tags=["Customers"])
 
@@ -56,3 +57,23 @@ def update_customer(customer_id: int, cust_in: CustomerUpdate, db: Session = Dep
     db.commit()
     db.refresh(customer)
     return customer
+
+
+@router.delete("/{customer_id}", status_code=status.HTTP_200_OK, dependencies=[Depends(require_roles([UserRole.ADMIN]))])
+def delete_customer(customer_id: int, db: Session = Depends(get_db)):
+    """Delete a customer profile (Admin only). Safely prevents deletion if transaction history exists."""
+    customer = db.query(Customer).filter(Customer.id == customer_id).first()
+    if not customer:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Customer not found")
+
+    # Transaction history check: prevent deletion if customer has existing bills
+    has_bills = db.query(Bill).filter(Bill.customer_id == customer_id).first()
+    if has_bills:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Customer cannot be deleted because transaction history exists."
+        )
+
+    db.delete(customer)
+    db.commit()
+    return {"message": "Customer deleted successfully."}

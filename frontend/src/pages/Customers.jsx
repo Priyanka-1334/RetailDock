@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { UserCheck, Plus, Search, Edit, X } from 'lucide-react';
-import api from '../services/api';
+import { UserCheck, Plus, Search, Edit, Trash2, X, AlertTriangle } from 'lucide-react';
+import api, { formatApiError } from '../services/api';
 import { useToast } from '../components/Toast';
+import { useAuth } from '../context/AuthContext';
 
 export const Customers = () => {
   const { addToast } = useToast();
+  const { isAdmin } = useAuth();
+
   const [customers, setCustomers] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
 
-  // Modal State
+  // Edit / Add Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState(null);
   const [formData, setFormData] = useState({ name: '', phone: '', email: '', address: '' });
+
+  // Delete Confirmation Modal State
+  const [deletingCustomer, setDeletingCustomer] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchCustomers = async () => {
     setLoading(true);
@@ -22,7 +29,7 @@ export const Customers = () => {
       });
       setCustomers(response.data);
     } catch (err) {
-      addToast('Failed to load customer directory', 'error');
+      addToast(formatApiError(err, 'Failed to load customer directory'), 'error');
     } finally {
       setLoading(false);
     }
@@ -61,7 +68,22 @@ export const Customers = () => {
       setIsModalOpen(false);
       fetchCustomers();
     } catch (err) {
-      addToast(err.response?.data?.detail || 'Failed to save customer', 'error');
+      addToast(formatApiError(err, 'Failed to save customer'), 'error');
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deletingCustomer) return;
+    setIsDeleting(true);
+    try {
+      await api.delete(`/api/customers/${deletingCustomer.id}`);
+      addToast('Customer deleted successfully.', 'success');
+      setDeletingCustomer(null);
+      fetchCustomers();
+    } catch (err) {
+      addToast(formatApiError(err, 'Failed to delete customer'), 'error');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -126,9 +148,23 @@ export const Customers = () => {
                     {new Date(c.created_at).toLocaleDateString()}
                   </td>
                   <td style={{ textAlign: 'right' }}>
-                    <button onClick={() => handleOpenModal(c)} className="btn btn-secondary btn-icon btn-sm">
+                    <button
+                      onClick={() => handleOpenModal(c)}
+                      className="btn btn-secondary btn-icon btn-sm"
+                      title="Edit Customer"
+                    >
                       <Edit size={14} />
                     </button>
+                    {isAdmin && (
+                      <button
+                        onClick={() => setDeletingCustomer(c)}
+                        className="btn btn-danger btn-icon btn-sm"
+                        style={{ marginLeft: '0.4rem' }}
+                        title="Delete Customer"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))
@@ -137,6 +173,7 @@ export const Customers = () => {
         </table>
       </div>
 
+      {/* Edit / Create Customer Modal */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -193,6 +230,72 @@ export const Customers = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Admin Delete Confirmation Modal */}
+      {deletingCustomer && (
+        <div className="modal-overlay">
+          <div className="modal-content" style={{ maxWidth: '440px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+              <div style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '50%',
+                backgroundColor: 'rgba(244, 63, 94, 0.15)',
+                color: 'var(--accent-rose)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <AlertTriangle size={22} />
+              </div>
+              <div>
+                <h2 style={{ fontSize: '1.2rem', margin: 0 }}>Delete Customer?</h2>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '0.2rem 0 0 0' }}>
+                  This action is permanent and cannot be undone.
+                </p>
+              </div>
+            </div>
+
+            <div style={{
+              padding: '0.85rem 1rem',
+              backgroundColor: '#0F172A',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid var(--border-color)',
+              marginBottom: '1.25rem',
+              fontSize: '0.85rem'
+            }}>
+              <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.95rem' }}>{deletingCustomer.name}</div>
+              <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginTop: '0.2rem' }}>
+                Phone: {deletingCustomer.phone || 'N/A'} • Email: {deletingCustomer.email || 'N/A'}
+              </div>
+            </div>
+
+            <p style={{ fontSize: '0.85rem', color: 'var(--text-main)', marginBottom: '1.5rem' }}>
+              Are you sure you want to delete this customer profile?
+            </p>
+
+            <div className="modal-footer" style={{ gap: '0.75rem' }}>
+              <button
+                type="button"
+                onClick={() => setDeletingCustomer(null)}
+                className="btn btn-secondary"
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmDelete}
+                className="btn btn-danger"
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Deleting...' : 'Delete Customer'}
+              </button>
+            </div>
           </div>
         </div>
       )}

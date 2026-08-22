@@ -17,7 +17,8 @@ export const Navbar = () => {
       justifyContent: 'space-between',
       position: 'sticky',
       top: 0,
-      zIndex: 100
+      zIndex: 100,
+      flexShrink: 0
     }}>
       {/* Top Left Search */}
       <div style={{ width: '320px' }} className="search-bar">

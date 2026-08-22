@@ -7,11 +7,30 @@ export const ToastProvider = ({ children }) => {
   const [toasts, setToasts] = useState([]);
 
   const addToast = (message, type = 'info') => {
+    let cleanMessage = message;
+    if (typeof message === 'object' && message !== null) {
+      if (Array.isArray(message)) {
+        cleanMessage = message
+          .map((m) => {
+            if (typeof m === 'string') return m;
+            if (m && typeof m === 'object') {
+              const field = Array.isArray(m.loc) ? m.loc[m.loc.length - 1] : '';
+              const msg = m.msg || 'Invalid value';
+              return field && field !== 'body' ? `${field}: ${msg}` : msg;
+            }
+            return 'Validation error';
+          })
+          .join(', ');
+      } else {
+        cleanMessage = message.message || message.msg || message.detail || JSON.stringify(message);
+      }
+    }
+
     const id = Date.now();
-    setToasts((prev) => [...prev, { id, message, type }]);
+    setToasts((prev) => [...prev, { id, message: String(cleanMessage || 'Notification'), type }]);
     setTimeout(() => {
       removeToast(id);
-    }, 4000);
+    }, 4500);
   };
 
   const removeToast = (id) => {

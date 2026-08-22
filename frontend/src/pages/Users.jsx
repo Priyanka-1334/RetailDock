@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Users as UsersIcon, Plus, Edit, Trash2, X, Shield, User } from 'lucide-react';
-import api from '../services/api';
+import api, { formatApiError } from '../services/api';
 import { useToast } from '../components/Toast';
 
 export const Users = () => {
@@ -26,7 +26,7 @@ export const Users = () => {
       const response = await api.get('/api/users');
       setUsersList(response.data);
     } catch (err) {
-      addToast('Failed to load user directory', 'error');
+      addToast(formatApiError(err, 'Failed to load user directory'), 'error');
     } finally {
       setLoading(false);
     }
@@ -64,11 +64,14 @@ export const Users = () => {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
+      const sanitizedEmail = formData.email && formData.email.trim() ? formData.email.trim() : null;
+      const sanitizedFullName = formData.full_name && formData.full_name.trim() ? formData.full_name.trim() : null;
+
       if (editingUser) {
         const updatePayload = {
           role: formData.role,
-          full_name: formData.full_name,
-          email: formData.email,
+          full_name: sanitizedFullName,
+          email: sanitizedEmail,
           is_active: formData.is_active
         };
         if (formData.password) {
@@ -77,19 +80,21 @@ export const Users = () => {
         await api.put(`/api/users/${editingUser.id}`, updatePayload);
         addToast('User account updated!', 'success');
       } else {
-        await api.post('/api/auth/register', {
-          username: formData.username,
+        const registerPayload = {
+          username: formData.username.trim(),
           password: formData.password,
           role: formData.role,
-          full_name: formData.full_name,
-          email: formData.email
-        });
+          full_name: sanitizedFullName,
+          email: sanitizedEmail
+        };
+
+        await api.post('/api/auth/register', registerPayload);
         addToast('New user account registered!', 'success');
       }
       setIsModalOpen(false);
       fetchUsers();
     } catch (err) {
-      addToast(err.response?.data?.detail || 'Failed to save user account', 'error');
+      addToast(formatApiError(err, 'Failed to save user account'), 'error');
     }
   };
 
@@ -100,7 +105,7 @@ export const Users = () => {
       addToast('User deleted', 'info');
       fetchUsers();
     } catch (err) {
-      addToast(err.response?.data?.detail || 'Failed to delete user', 'error');
+      addToast(formatApiError(err, 'Failed to delete user'), 'error');
     }
   };
 
@@ -188,6 +193,7 @@ export const Users = () => {
                   value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                   disabled={!!editingUser}
+                  autoComplete="username"
                   required
                 />
               </div>
@@ -199,6 +205,7 @@ export const Users = () => {
                   className="form-input"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  autoComplete={editingUser ? "new-password" : "new-password"}
                   required={!editingUser}
                 />
               </div>
@@ -222,6 +229,7 @@ export const Users = () => {
                   className="form-input"
                   value={formData.full_name}
                   onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                  autoComplete="name"
                 />
               </div>
 
@@ -232,6 +240,7 @@ export const Users = () => {
                   className="form-input"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  autoComplete="email"
                 />
               </div>
 

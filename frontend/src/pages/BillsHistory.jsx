@@ -113,22 +113,25 @@ export const BillsHistory = () => {
                   <td>
                     <span className="badge badge-success">{b.payment_status}</span>
                   </td>
-                  <td style={{ textAlign: 'right' }}>
-                    <button
-                      onClick={() => setSelectedBill(b)}
-                      className="btn btn-secondary btn-icon btn-sm"
-                      style={{ marginRight: '0.5rem' }}
-                      title="View Bill Details"
-                    >
-                      <Eye size={14} />
-                    </button>
-                    <button
-                      onClick={() => handleDownloadInvoice(b.id, b.bill_number)}
-                      className="btn btn-primary btn-sm"
-                    >
-                      <Download size={14} />
-                      <span>Invoice</span>
-                    </button>
+                  <td className="action-cell">
+                    <div className="action-buttons">
+                      <button
+                        onClick={() => setSelectedBill(b)}
+                        className="action-btn action-btn-view"
+                        title="View Invoice Details"
+                        aria-label="View Invoice Details"
+                      >
+                        <Eye size={14} />
+                      </button>
+                      <button
+                        onClick={() => handleDownloadInvoice(b.id, b.bill_number)}
+                        className="action-btn action-btn-invoice"
+                        title="Download PDF Invoice"
+                        aria-label="Download PDF Invoice"
+                      >
+                        <Download size={14} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

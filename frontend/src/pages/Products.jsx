@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Package, Plus, Search, Filter, Edit, Trash2, AlertTriangle, X } from 'lucide-react';
+import { Package, Plus, Search, Filter, Edit, Trash2, AlertTriangle, CheckCircle2, XCircle, X } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../components/Toast';
@@ -216,25 +216,43 @@ export const Products = () => {
                   <td style={{ color: 'var(--accent-emerald)', fontWeight: 700 }}>₹{parseFloat(p.selling_price).toFixed(2)}</td>
                   <td style={{ fontWeight: 800 }}>{p.quantity}</td>
                   <td>
-                    <span className={`badge ${p.is_low_stock ? (p.quantity === 0 ? 'badge-danger' : 'badge-warning') : 'badge-success'}`}>
-                      {p.quantity === 0 ? 'OUT OF STOCK' : p.is_low_stock ? 'LOW STOCK' : 'IN STOCK'}
-                    </span>
+                    {p.quantity === 0 ? (
+                      <span className="badge badge-danger">
+                        <XCircle size={12} />
+                        <span>OUT OF STOCK</span>
+                      </span>
+                    ) : p.is_low_stock ? (
+                      <span className="badge badge-warning">
+                        <AlertTriangle size={12} />
+                        <span>LOW STOCK</span>
+                      </span>
+                    ) : (
+                      <span className="badge badge-success">
+                        <CheckCircle2 size={12} />
+                        <span>IN STOCK</span>
+                      </span>
+                    )}
                   </td>
                   {isAdmin && (
-                    <td style={{ textAlign: 'right' }}>
-                      <button
-                        onClick={() => handleOpenModal(p)}
-                        className="btn btn-secondary btn-icon btn-sm"
-                        style={{ marginRight: '0.5rem' }}
-                      >
-                        <Edit size={14} />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteProduct(p.id)}
-                        className="btn btn-danger btn-icon btn-sm"
-                      >
-                        <Trash2 size={14} />
-                      </button>
+                    <td className="action-cell">
+                      <div className="action-buttons">
+                        <button
+                          onClick={() => handleOpenModal(p)}
+                          className="action-btn action-btn-edit"
+                          title="Edit Product"
+                          aria-label="Edit Product"
+                        >
+                          <Edit size={14} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteProduct(p.id)}
+                          className="action-btn action-btn-delete"
+                          title="Delete Product"
+                          aria-label="Delete Product"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
                     </td>
                   )}
                 </tr>
