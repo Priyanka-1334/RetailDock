@@ -1,0 +1,38 @@
+# Python & virtual environment
+__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node.js & Vite
+node_modules/
+dist/
+dist-ssr/
+build/
+*.local
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Docker logs & persistent volumes
+*.log
+postgres_data/
+
+# Local test database
+backend/test.db
